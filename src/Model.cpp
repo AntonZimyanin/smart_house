@@ -2,10 +2,10 @@
 #include "Model.h"
 #include <iostream>
 #include <assert.h>
+#include <string.h>
 
 CModel::CModel() :
-            m_Objects(),
-            m_MusicContext()
+            m_Objects()
 {
 }
 
@@ -20,7 +20,7 @@ void CModel::DestroyAll()
     for (vector<CBaseObject*>::iterator p = m_Objects.begin(); p != m_Objects.end(); ++p)
 		delete *p;
 	m_Objects.clear();
-	m_MusicContext.Stop();
+	// m_MusicContext.Stop();
 }
 
 // перерисовать весь набор объектов и вывести приглашение для ввода следующей команды
@@ -42,8 +42,8 @@ bool CModel::Store(IStorer* pStorer)
 {
 	if (!pStorer->Store(g_sContextFileID))
 		return false;
-	if (!m_MusicContext.Store(pStorer))
-		return false;
+	//if (!m_MusicContext.Store(pStorer))
+	//	return false;
 	if (!pStorer->Store(static_cast<int>(m_Objects.size())))
 		return false;
 	for (vector<CBaseObject*>::iterator pIter = m_Objects.begin(); pIter != m_Objects.end(); ++pIter)
@@ -61,9 +61,9 @@ bool CModel::Load(ILoader* pLoader, CObjectFactory* pFactory)
 		return false; // неверный идентификатор файла схемы объектов
 	// при запуске проигрывания музыки выводится ошибка (где-то в исходниках SDL)
 	// выведем её красным если она всё ещё выводится
-	bool bLoadMusic = m_MusicContext.Load(pLoader);
-	if (!bLoadMusic)
-		return false;
+	//bool bLoadMusic = m_MusicContext.Load(pLoader);
+	//if (!bLoadMusic)
+	//	return false;
 
 	int cnt = 0;
 	if (!pLoader->Load(cnt))

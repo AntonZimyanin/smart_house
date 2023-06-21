@@ -1,7 +1,7 @@
 #pragma once
 #include "Commands/_CommandHolder.h"
 #include "SmartObjects/_ObjectFactory.h"
-#include "Utils\ConsoleManip.h"
+#include "Utils/ConsoleManip.h"
 #include "Model.h"
 
 class CContext

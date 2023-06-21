@@ -13,7 +13,7 @@
 #define _HAS_STD_BYTE 0
 
 #include <stdio.h>
-#include <tchar.h>
+// #include <tchar.h>
 #include <math.h>
 // TODO: reference additional headers your program requires here
 #include <stdio.h>

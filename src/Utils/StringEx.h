@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string.h>
+
 using namespace std;
 #define OUT
 

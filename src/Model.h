@@ -1,6 +1,6 @@
 #pragma once
-#include "Utils\ConsoleManip.h"
-#include "Utils\MusicContext.h"
+#include "Utils/ConsoleManip.h"
+#include "Utils/MusicContext.h"
 #include "SmartObjects/_BaseObject.h"
 #include "SmartObjects/_ObjectFactory.h"
 using namespace std;
@@ -13,7 +13,7 @@ class CModel
 private:
 	vector<CBaseObject*> m_Objects; // объекты в порядке создания (должны отрисовываться в таком порядке)
 public:
-	CMusicContext m_MusicContext;
+	// CMusicContext m_MusicContext;
 
 	CModel();
 	virtual ~CModel(); // virtual - на случай возможного дальнейшего расширения программы, в данный момент не используется, поскольку наследников этого класса нет

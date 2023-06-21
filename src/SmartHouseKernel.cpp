@@ -2,7 +2,7 @@
 //
 
 #include "stdafx.h"
-#include <conio.h>
+// #include <conio.h>
 #include "Context.h"
 #include "Utils/StringEx.h"
 #include "Storage/BinLoader.h"
@@ -66,7 +66,7 @@ int main(void)
         context.m_Console.SetTextColor(enmColors::black, enmColors::dark_red);
         context.m_Console << "Внимание: не удалось сохранить конфигурацию объектов в файл" << endl;
         context.m_Console.SetTextColor(); // цвета консоли по умолчанию
-        _getch();
+        getchar();
     }
     return 0;
 }

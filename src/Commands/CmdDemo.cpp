@@ -61,9 +61,9 @@ bool CCmdDemo::Execute(CContext* pContext, vector<stringEx>& vParameters)
     // один в маленькой
     if (pSmallRoom)
         res &= pContext->m_ActiveModel.AddObject(new CLampObject("lamp3", pSmallRoom->X() + 4, pSmallRoom->Y() + 2, false));
-    pContext->m_ActiveModel.m_MusicContext.ReloadMusicList();
-    pContext->m_ActiveModel.m_MusicContext.SelectFirstFile();
-    pContext->m_ActiveModel.m_MusicContext.Stop();
+    // pContext->m_ActiveModel.m_MusicContext.ReloadMusicList();
+    // pContext->m_ActiveModel.m_MusicContext.SelectFirstFile();
+    // pContext->m_ActiveModel.m_MusicContext.Stop();
     pContext->m_Console << "Демонстационная схема создана" << endl;
     return res;
 }

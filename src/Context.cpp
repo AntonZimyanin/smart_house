@@ -2,7 +2,6 @@
 #include "Context.h"
 #include <iostream>
 #include <assert.h>
-#include <windows.h>
 #include "Utils/StringEx.h"
 #include "Storage/BinLoader.h"
 #include "Storage/TxtLoader.h"

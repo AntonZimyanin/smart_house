@@ -1,4 +1,4 @@
-#include "../stdafx.h"
+/*#include "../stdafx.h"
 #include <iostream>
 #include <windows.h>
 #include "MusicContext.h"
@@ -288,4 +288,4 @@ void CMusicContext::PrintAvailableMusics(CConsoleManip& cons) const
         i++;
     }
     cons << "Всего найдено: " << m_vsFiles.size() << " файл(ов)" << endl;
-}
+}*/

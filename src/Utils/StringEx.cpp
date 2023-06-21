@@ -1,6 +1,6 @@
 #include "../stdafx.h"
 #include "StringEx.h"
-#include <windows.h>
+// #include <windows.h>
 #include <ctype.h>
 
 // разбить строку psText на слова
@@ -86,7 +86,7 @@ stringEx& stringEx::ConvertToDos()
     if (!length())
         return *this;
     char* psStr = &(*this)[0];// буфер, где лежат символы строки
-    ::AnsiToOem(psStr, OUT psStr);
+    // ::AnsiToOem(psStr, OUT psStr);
     return *this;
 }
 // сконвертировать строку из кодировки cp866 (кодировки консоли)
@@ -96,6 +96,6 @@ stringEx& stringEx::ConvertToWin()
     if (!length())
         return *this;;
     char* psStr = &(*this)[0];// буфер, где лежат символы строки
-    ::OemToAnsi(psStr, OUT psStr);
+    // ::OemToAnsi(psStr, OUT psStr);
     return *this;
 }

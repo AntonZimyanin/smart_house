@@ -1,41 +1,24 @@
 #pragma once
 
-#include <windows.h>
 #include "StringEx.h"
+#include "Colors.h"
 #include <functional>
 
-enum class enmColors
-{
-    black,          //  0 text color - multiply by 16, for background colors
-    dark_blue,      //  1
-    dark_green,     //  2
-    dark_cyan,      //  3
-    dark_red,       //  4
-    dark_magenta,   //  5
-    dark_yellow,    //  6
-    light_gray,     //  7
-    dark_gray,      //  8
-    light_blue,     //  9
-    light_green,    // 10
-    light_cyan,     // 11
-    light_red,      // 12
-    light_magenta,  // 13
-    light_yellow,   // 14
-    white           // 15
+struct COORD {
+    int X;
+    int Y;
 };
 
 class CConsoleManip
 {
 private:
-    HANDLE m_hStdout;
-    CONSOLE_SCREEN_BUFFER_INFO m_csbiInfo;
-
+    COORD size;
     // вывести единственную строку текста в указанной позиции
     // если строка выходит за пределы области рисования - вывести урезанную строку
     bool DrawText(short x, short y,
-                  const char* sText, UINT length = UINT_MAX /*- use strlen*/,
-                  enmColors crBackColor = enmColors::black,
-                  enmColors crForeColor = enmColors::white);
+                  const char* sText, uint length = 1'000'000'000 /*- use strlen*/,
+                  Color crBackColor = enmColors::black,
+                  Color crForeColor = enmColors::white);
 
     CConsoleManip(const CConsoleManip&) = delete;
     void operator=(const CConsoleManip&) = delete;
@@ -51,13 +34,13 @@ public:
     // если строка выходит за область рисования - будет выведена урезанная строка
     bool DrawTextMultiline(short x, short y,
                            stringEx sText,
-                           enmColors crBackColor = enmColors::black,
-                           enmColors crForeColor = enmColors::white);
+                           Color crBackColor = enmColors::black,
+                           Color crForeColor = enmColors::white);
     bool SetConsolePos(short x, short y);
     bool SetConsolePos(const COORD& pos);
     COORD GetConsolePos() const;
-    bool SetTextColor(enmColors crBackColor = enmColors::black,
-                      enmColors crForeColor = enmColors::light_gray);
+    bool SetTextColor(Color crBackColor = enmColors::black,
+                      Color crForeColor = enmColors::light_gray);
     COORD DrawSpaceSize() const; // размер пространства для рисования
     COORD DrawSpacePos() const; // вернуть позицию где отображается схема
     void ClearDrawSpace(); // очистить область отображения схемы
