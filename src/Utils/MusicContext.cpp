@@ -1,19 +1,22 @@
-/*#include "../stdafx.h"
+#include "../stdafx.h"
 #include <iostream>
-#include <windows.h>
+//#include <windows.h>
 #include "MusicContext.h"
 #include "ConsoleManip.h"
-#include "..\..\libSDL\include\SDL_mixer.h"
+#include "../libSDL/include/SDL_mixer.h"
 #include <filesystem>
-using namespace std;
 
+
+
+using namespace std;
+    #pragma comment(lib, "../libSDL/libs_x86/SDL2_mixer.lib")
+    #pragma comment(lib, "../libSDL/libs_x86/SDL2.lib")
+    namespace fs = std::filesystem;
 #ifdef _MSC_VER
     // microsoft VC
     // поддерживает указание Lib файлов в коде
     // через директиву компилятору #pragma comment
-    #pragma comment(lib, "../libSDL/libs_x86/SDL2_mixer.lib")
-    #pragma comment(lib, "../libSDL/libs_x86/SDL2.lib")
-    namespace fs = std::filesystem;
+
 #else
     // CodeBlocks + GCC
     // не поддерживает #pragma comment
@@ -71,7 +74,7 @@ void CMusicContext::OnFinishMusicPlay()
     {
         if (Mix_PlayMusic(reinterpret_cast<Mix_Music*>(m_pMusic), 1) == -1)
             return; // error
-        m_nMusicStartTime = GetTickCount();
+        m_nMusicStartTime = 0;
         m_isPlaying = true;
     }
 }
@@ -100,7 +103,8 @@ bool CMusicContext::Play()
     {
         Mix_ResumeMusic();
         // корректируем время запуска мелодии чтобы по нему можно было отследить текущую проигрываемую позицию
-        m_nMusicStartTime += GetTickCount() - m_nMusicPauseTime;
+        // m_nMusicStartTime += 0 - m_nMusicPauseTime;
+        m_nMusicStartTime = 0;
         m_isPaused = false;
         return true;
     }
@@ -112,7 +116,7 @@ bool CMusicContext::Play()
     }
     if (Mix_PlayMusic(reinterpret_cast<Mix_Music*>(m_pMusic), 1) == -1) // повторить мелодию один раз, указание большего числа повторений не работает
         return false;
-    m_nMusicStartTime = GetTickCount();
+    m_nMusicStartTime = 0;
     m_isPlaying = true;
     return true;
 }
@@ -128,7 +132,7 @@ bool CMusicContext::Stop()
     if (m_isPlaying)
     {
         Mix_PauseMusic();
-        m_nMusicPauseTime = GetTickCount();
+        m_nMusicPauseTime = 0;
         m_isPaused = true;
         return true;
     }
@@ -154,7 +158,7 @@ int CMusicContext::Position() const
     if (m_isPaused)
         return m_nMusicPauseTime - m_nMusicStartTime;
     // мелодия сейчас проигрывается
-    return GetTickCount() - m_nMusicStartTime;
+    return 0;
 }
 
 void CMusicContext::Position(int newPositionMs)
@@ -162,9 +166,11 @@ void CMusicContext::Position(int newPositionMs)
     if (!m_isPlaying)
         return;
     Mix_SetMusicPosition(newPositionMs / 1000.0); // переводим в секунды
-    m_nMusicStartTime = GetTickCount() - newPositionMs;
+    // m_nMusicStartTime = GetTickCount() - newPositionMs;
+    m_nMusicStartTime = 0;
+
     if (m_isPaused)
-        m_nMusicPauseTime = GetTickCount();
+        m_nMusicPauseTime = 0;
 }
 
 const char g_sMediaID[] = "Media"; // признак, что далее идут настройки проигрывателя музыки в файле
@@ -288,4 +294,4 @@ void CMusicContext::PrintAvailableMusics(CConsoleManip& cons) const
         i++;
     }
     cons << "Всего найдено: " << m_vsFiles.size() << " файл(ов)" << endl;
-}*/
+}

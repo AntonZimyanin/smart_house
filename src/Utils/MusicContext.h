@@ -1,5 +1,5 @@
 #pragma once
-/*
+
 #include "../Storage/_Loader.h"
 #include "../Storage/_Storer.h"
 #include <vector>
@@ -51,4 +51,3 @@ public:
     bool Load(ILoader* pLoader);
 };
 
-*/
