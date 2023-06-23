@@ -5,7 +5,13 @@ set (CMAKE_CXX_STANDARD 20)
 project(smart_house)
 
 find_package(SDL2 REQUIRED)
-find_package(SDL2_mixer REQUIRED)
+find_library(SDL_MIXER_LIBRARY
+  NAMES SDL2_mixer
+  HINTS
+    ENV SDLMIXERDIR
+    ENV SDLDIR
+  PATH_SUFFIXES lib
+)
 
 aux_source_directory(./src SRC1)
 aux_source_directory(./src/Commands SRC2)
