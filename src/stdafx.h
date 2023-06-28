@@ -24,6 +24,10 @@
 #include <vector>
 #include "Utils/StringEx.h"
 #include <map>
+
+#include <stdint.h>
+#include <time.h>
+
 using namespace std;
 
 #define OUT

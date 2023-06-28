@@ -7,6 +7,10 @@ using namespace std;
 
 #define MIN_MAX_VOLUME 128
 
+
+
+
+
 class CConsoleManip;
 
 class CMusicContext
@@ -15,9 +19,9 @@ private:
     vector<string> m_vsFiles; // список доступных для воспроизведения файлов
     int m_iCurFile; // номер текущего проигрываемого файла в m_vsFiles
     void* m_pMusic; // дескриптор библиотеки SDL для текущей мелодии
-    uint m_nMusicStartTime; // момент запуска мелодии, считается как количество милисекунд после включения компьютера
+    uint32_t m_nMusicStartTime; // момент запуска мелодии, считается как количество милисекунд после включения компьютера
                              // этот способ используется поскольку билиотека SDL не позволяет получить текущую позицию проигрывания - считаем её сами от момента когда запустили проигрывание
-    uint m_nMusicPauseTime; // момент когда поставили проигрывание на паузу
+    uint32_t m_nMusicPauseTime; // момент когда поставили проигрывание на паузу
 
     bool m_isPlaying; // признак что мелодия была запущена на воспроизведение(при этом она может играть или стоять на паузе)
     bool m_isPaused; // не останавливаем воспроизведение, а ставим на паузу, чтобы после команды play продолжить с той же позиции
@@ -36,6 +40,9 @@ public:
     CMusicContext();
     ~CMusicContext();
     bool isPlaying();
+
+    int testPlay();
+
     bool Play();
     bool Stop();
     int Volume() const;

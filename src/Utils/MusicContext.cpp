@@ -5,6 +5,67 @@
 #include "ConsoleManip.h"
 #include "../libSDL/include/SDL_mixer.h"
 #include <filesystem>
+#include "../libSDL/include/SDL.h"
+
+
+
+ 
+
+
+
+int CMusicContext::testPlay()
+{
+    SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
+    Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
+
+    // Check if the WAV file exists
+    // bool fileExists = SDL_FileExists("m.wav");
+    // if (!fileExists) {
+    //     printf("The WAV file does not exist.\n");
+    //     return 1;
+    // }
+
+    // Get the current working directory
+    string workingDir = SDL_GetBasePath();
+
+    // Load the WAV file
+    Mix_Chunk* chunk = Mix_LoadWAV((const char *)(workingDir+ "/m.wav").data());
+    if (chunk == NULL) {
+        printf(workingDir.data(), "%s\n\n");
+        printf("Failed to load WAV file: %s\n", Mix_GetError());
+        return 1;
+    }
+
+    // Play the WAV file
+    Mix_PlayChannel(-1, chunk, 0);
+
+    // Wait for the WAV file to finish playing
+    while (Mix_Playing(-1)) {
+        SDL_Delay(100);
+    }
+
+    // Close SDL and SDL_mixer
+    Mix_FreeChunk(chunk);
+    Mix_CloseAudio();
+    SDL_Quit();
+
+    return 0;
+}
+
+
+
+// #include <stdint.h>
+// #include <time.h>
+
+// uint32_t get_milliseconds_since_boot() {
+//   // Get the current time in milliseconds
+//   time_t now = time(NULL);
+
+//   // Convert the time to milliseconds
+//   uint32_t milliseconds = (uint32_t)now * 1000;
+
+//   return milliseconds;
+// }
 
 
 
@@ -74,7 +135,9 @@ void CMusicContext::OnFinishMusicPlay()
     {
         if (Mix_PlayMusic(reinterpret_cast<Mix_Music*>(m_pMusic), 1) == -1)
             return; // error
-        m_nMusicStartTime = 0;
+        time_t now = time(nullptr);
+
+        m_nMusicStartTime = (uint32_t)(now) * 10000;
         m_isPlaying = true;
     }
 }
@@ -92,33 +155,56 @@ bool CMusicContext::isPlaying()
 
 bool CMusicContext::Play()
 {
-    if (!m_pMusic) // файл не удаётся загрузить
-    {
-        if (!ReloadCurFile())
-            return false;
-        if (!m_pMusic)
-            return false;
-    }
-    if (m_isPaused)
-    {
-        Mix_ResumeMusic();
-        // корректируем время запуска мелодии чтобы по нему можно было отследить текущую проигрываемую позицию
-        // m_nMusicStartTime += 0 - m_nMusicPauseTime;
-        m_nMusicStartTime = 0;
-        m_isPaused = false;
-        return true;
-    }
-    if (m_isPlaying)
-    {
-        if (Mix_PlayingMusic())
-            return true;
-        m_isPlaying = false;  // обновим статус на случай если музыка уже доиграла
-    }
-    if (Mix_PlayMusic(reinterpret_cast<Mix_Music*>(m_pMusic), 1) == -1) // повторить мелодию один раз, указание большего числа повторений не работает
-        return false;
-    m_nMusicStartTime = 0;
-    m_isPlaying = true;
-    return true;
+    // if (!m_pMusic) // файл не удаётся загрузить
+    // {
+    //     if (!ReloadCurFile())
+    //         return false;
+    //     if (!m_pMusic)
+    //         return false;
+    // }
+    // if (m_isPaused)
+    // {
+    //     Mix_ResumeMusic();
+    //     // корректируем время запуска мелодии чтобы по нему можно было отследить текущую проигрываемую позицию
+    //     // m_nMusicStartTime += 0 - m_nMusicPauseTime;
+    //     m_nMusicStartTime = 1 * 10;
+    //     m_isPaused = false;
+    //     return true;
+    // }
+    // if (m_isPlaying)
+    // {
+    //     if (Mix_PlayingMusic())
+    //         return true;
+    //     m_isPlaying = false;  // обновим статус на случай если музыка уже доиграла
+    // }
+    // if (Mix_PlayMusic(reinterpret_cast<Mix_Music*>(m_pMusic), 1) == -1) // повторить мелодию один раз, указание большего числа повторений не работает
+    //     return false;
+    // m_nMusicStartTime = 10;
+    // m_isPlaying = true;
+    // return true;
+
+    SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
+  Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
+
+  // Load the WAV file
+  Mix_Chunk* chunk = Mix_LoadWAV("m.wav");
+  if (chunk == NULL) {
+    printf("Failed to load WAV file: %s\n", Mix_GetError());
+    return 1;
+  }
+
+  // Play the WAV file
+  Mix_PlayChannel(-1, chunk, 0);
+
+  // Wait for the WAV file to finish playing
+  while (Mix_Playing(-1)) {
+    SDL_Delay(100);
+  }
+
+//   Close SDL and SDL_mixer
+  Mix_FreeChunk(chunk);
+  Mix_CloseAudio();
+  SDL_Quit();
 }
 
 bool CMusicContext::Stop()
@@ -215,19 +301,23 @@ bool CMusicContext::Load(ILoader* pLoader)
 void CMusicContext::ReloadMusicList()
 {
     m_vsFiles.clear();
-    fs::path musicPath("../Music");
-    if (fs::exists(musicPath) && fs::is_directory(musicPath))
-    {
-        for (auto const & entry : fs::recursive_directory_iterator(musicPath))
-        {
-            if (fs::is_regular_file(entry) && entry.path().extension() == ".mp3")
-                m_vsFiles.push_back(entry.path().string());
-        }
-    }
+    m_vsFiles.push_back("m.wav");
+    // fs::path musicPath("home/anton/smart_house/src/Music");
+    // if (fs::exists(musicPath) && fs::is_directory(musicPath))
+    // {
+    //     for (auto const & entry : fs::recursive_directory_iterator(musicPath))
+    //     {
+    //         if (fs::is_regular_file(entry) && entry.path().extension() == ".mp3")
+    //             m_vsFiles.push_back(entry.path().string());
+    //     }
+    // }
 }
+
+
 
 bool CMusicContext::ReloadCurFile()
 {
+    
     if (m_pMusic)
         UnloadCurFile();
     if (m_vsFiles.size() == 0)
@@ -237,15 +327,25 @@ bool CMusicContext::ReloadCurFile()
     }
     if (m_iCurFile < 0 || m_iCurFile >= (int)m_vsFiles.size())
         m_iCurFile = 0;
+    
     for (unsigned int i = 0; i < m_vsFiles.size(); i++, m_iCurFile++) // перебираем все файлы, на случай наличия сбойных (неподдерживаемых) файлов
     {                                                   // пробуем максимум m_vsFiles.size() файлов
         if (m_iCurFile >= (int)m_vsFiles.size())
             m_iCurFile = 0;
-        m_pMusic = Mix_LoadMUS(m_vsFiles[m_iCurFile].c_str());
+        FILE* f = fopen("../Music/m.wav", "rb");
+        if (!f)
+        {
+            cout << "Failed to open file: " << m_vsFiles[0].c_str() << endl;
+            return false;
+        }
+        SDL_RWops* rwops = SDL_RWFromFile(m_vsFiles[0].c_str(), "rb");
+        m_pMusic = Mix_LoadWAV_RW(rwops, 0);
+        SDL_RWclose(rwops);
         if (m_pMusic)
             return true;
         cout << "Mix_LoadMUS: " << Mix_GetError() << endl;
     }
+
     return false;
 }
 void CMusicContext::UnloadCurFile()
