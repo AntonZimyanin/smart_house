@@ -15,6 +15,7 @@
 
 int CMusicContext::testPlay()
 {
+    
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
     Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
 
@@ -155,56 +156,56 @@ bool CMusicContext::isPlaying()
 
 bool CMusicContext::Play()
 {
-    // if (!m_pMusic) // файл не удаётся загрузить
-    // {
-    //     if (!ReloadCurFile())
-    //         return false;
-    //     if (!m_pMusic)
-    //         return false;
-    // }
-    // if (m_isPaused)
-    // {
-    //     Mix_ResumeMusic();
-    //     // корректируем время запуска мелодии чтобы по нему можно было отследить текущую проигрываемую позицию
-    //     // m_nMusicStartTime += 0 - m_nMusicPauseTime;
-    //     m_nMusicStartTime = 1 * 10;
-    //     m_isPaused = false;
-    //     return true;
-    // }
-    // if (m_isPlaying)
-    // {
-    //     if (Mix_PlayingMusic())
-    //         return true;
-    //     m_isPlaying = false;  // обновим статус на случай если музыка уже доиграла
-    // }
-    // if (Mix_PlayMusic(reinterpret_cast<Mix_Music*>(m_pMusic), 1) == -1) // повторить мелодию один раз, указание большего числа повторений не работает
-    //     return false;
-    // m_nMusicStartTime = 10;
-    // m_isPlaying = true;
-    // return true;
+    if (!m_pMusic) // файл не удаётся загрузить
+    {
+        if (!ReloadCurFile())
+            return false;
+        if (!m_pMusic)
+            return false;
+    }
+    if (m_isPaused)
+    {
+        Mix_ResumeMusic();
+        // корректируем время запуска мелодии чтобы по нему можно было отследить текущую проигрываемую позицию
+        // m_nMusicStartTime += 0 - m_nMusicPauseTime;
+        m_nMusicStartTime = 0;
+        m_isPaused = false;
+        return true;
+    }
+    if (m_isPlaying)
+    {
+        if (Mix_PlayingMusic())
+            return true;
+        m_isPlaying = false;  // обновим статус на случай если музыка уже доиграла
+    }
+    if (Mix_PlayMusic(reinterpret_cast<Mix_Music*>(m_pMusic), 1) == -1) // повторить мелодию один раз, указание большего числа повторений не работает
+        return false;
+    m_nMusicStartTime = 0;
+    m_isPlaying = true;
+    return true;
 
-    SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
-  Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
+//     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
+//   Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
 
-  // Load the WAV file
-  Mix_Chunk* chunk = Mix_LoadWAV("m.wav");
-  if (chunk == NULL) {
-    printf("Failed to load WAV file: %s\n", Mix_GetError());
-    return 1;
-  }
+//   // Load the WAV file
+//   Mix_Chunk* chunk = Mix_LoadWAV("m.wav");
+//   if (chunk == NULL) {
+//     printf("Failed to load WAV file: %s\n", Mix_GetError());
+//     return 1;
+//   }
 
-  // Play the WAV file
-  Mix_PlayChannel(-1, chunk, 0);
+//   // Play the WAV file
+//   Mix_PlayChannel(-1, chunk, 0);
 
-  // Wait for the WAV file to finish playing
-  while (Mix_Playing(-1)) {
-    SDL_Delay(100);
-  }
+//   // Wait for the WAV file to finish playing
+//   while (Mix_Playing(-1)) {
+//     SDL_Delay(100);
+//   }
 
-//   Close SDL and SDL_mixer
-  Mix_FreeChunk(chunk);
-  Mix_CloseAudio();
-  SDL_Quit();
+// //   Close SDL and SDL_mixer
+//   Mix_FreeChunk(chunk);
+//   Mix_CloseAudio();
+//   SDL_Quit();
 }
 
 bool CMusicContext::Stop()

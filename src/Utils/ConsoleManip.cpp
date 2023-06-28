@@ -120,6 +120,16 @@ void CConsoleManip::ClearDrawSpace()
         DrawText(0, i, spaces.c_str(), spaces.length());
 }
 
+size_t len(const wchar_t *str) {
+  size_t len = 0;
+  while (*str != L'\0') {
+    len++;
+    str++;
+  }
+  return len;
+}
+
+
 // вывести единственную строку текста в указанной позиции
 // если строка выходит за пределы области рисования - вывести урезанную строку
 bool CConsoleManip::DrawText(short x, short y,
