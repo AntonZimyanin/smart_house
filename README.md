@@ -52,7 +52,7 @@ The following table shows which commands can be used by which users:
 1. Clone the repository:
 
    ```
-   git clone https://github.com/
+   git clone https://github.com/AntonZimyanin/smart_house.git
    ```
 
 
