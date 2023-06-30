@@ -23,30 +23,6 @@ The following commands are available in the program:
 * `volume` - Find out or set the playback volume level.
 
 
-
-## Who can use which commands?
-
-The following table shows which commands can be used by which users:
-
-| Command | user |
-|---|---|
-| close | user |
-| create | user |
-| delete | user |
-| demo | user |
-| exit | user |
-| help | user |
-| list | user |
-| load | user |
-| music | user |
-| musicposition | user |
-| off | user |
-| on | user |
-| open | user |
-| store | user |
-| volume | user |
-
-
 ## Getting started
 
 1. Clone the repository:
