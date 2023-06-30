@@ -4,8 +4,8 @@
 #include "MusicContext.h"
 #include "ConsoleManip.h"
 #include "../libSDL/include/SDL_mixer.h"
-#include <filesystem>
 #include "../libSDL/include/SDL.h"
+#include <filesystem>
 
 
 
